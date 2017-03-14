@@ -4,4 +4,8 @@ class Bike
     true
   end
 
+  def length
+    10
+  end
+
 end
