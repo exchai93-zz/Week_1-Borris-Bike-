@@ -1,6 +1,7 @@
 require 'docking_station'
 
 describe DockingStation do
+
   it 'returns bike when released' do
     expect(subject).to respond_to :release_bike
   end
@@ -14,7 +15,7 @@ describe DockingStation do
   it 'docks a bike' do
     bike = Bike.new
     subject.dock(bike)
-    expect(subject.instance_variable_get(:@bikes)).to include(bike)
+    expect(subject.bikes).to include(bike)
   end
 
   it 'raises an error when there are no bikes available' do
@@ -23,7 +24,15 @@ describe DockingStation do
 
   it 'raises an error when full' do
     20.times {subject.dock Bike.new}
-      expect {subject.dock Bike.new }.to raise_error 'Dock Full'
+    expect {subject.dock Bike.new }.to raise_error 'Dock Full'
   end
+
+  it 'has a default capacity of 20' do
+    expect(subject.capacity).to eq 20
+  end
+
+#  it 'has a capacity of that specified by the user' do
+#    expect (subject.instance_variable_get(:@capacity)).to eq(30)
+#  end
 
 end
