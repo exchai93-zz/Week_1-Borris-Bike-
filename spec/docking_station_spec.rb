@@ -12,8 +12,15 @@ describe DockingStation do
     it 'releases a working bike' do
       bmx = Bike.new # makes a new instance bmx of the bike class - object
       subject.dock(bmx) # docking the bmx in the docking station using the dock method
-      released_bike = subject.release_bike # using the release bike method on docking station
-      expect(released_bike).to be_working
+       # using the release bike method on docking station
+      expect(subject.release_bike).to eq bmx
+    end
+
+    it "doesn't release a broken bike" do
+      bike = Bike.new
+      bike.report_broken
+      subject.dock(bike)
+      expect {subject.release_bike}.to raise_error "Bike broken!"
     end
   end
 
@@ -30,6 +37,11 @@ describe DockingStation do
     it 'raises an error when full' do
     subject.capacity.times { subject.dock Bike.new }
     expect { subject.dock Bike.new }.to raise_error('Docking station full')
+    end
+    it 'docks a broken bike' do
+      bike = Bike.new
+      bike.report_broken
+      expect(subject.dock(bike)).to eq [bike]
     end
   end
 
